@@ -1,0 +1,6 @@
+Django==2.1.7
+biopython==1.73
+numpy==1.16.2
+pip==9.0.1
+pytz==2018.9
+setuptools==28.8.0
