@@ -1,36 +1,34 @@
-from Bio.Seq import Seq
-from textwrap import wrap
-from Bio import Entrez
-from Bio import SeqIO
-from Bio.Alphabet import generic_dna
 import re
 
+import regex as re
+from Bio import SeqIO
+
+from ORFObject import ORF
+
+
 def main():
-    sequence = "CCTCAATGGCGAGGACAGCAAGGGACTAGCCAGGAGGGAGAACAGAAACTCCAGAACATCTTGGAAATAGCTCCCAGAAAAGCAAGCAGCCAACCAGGCAGGTTCTGTCCCTTTCACTCACTGGCCCAAGGCGCCACATCTCCCTCCAGAAAAGACACCATGAGCACAGAAAGCATGATCCGCGACGTGGAACTGGCAGAAGAGGCACTCCCCCAAAAGATGGGGGGCTTCCAGAACTCCAGGCGGTGCCTATGTCTCAGCCTCTTCTCATTCCTGCTTGTGGCAGGGGCCACCACGCTCTTCTGTCTACTGAACTTCGGGGTGATCGGTCCCCAAAGGGATGAGAAGTTCCCAAATGGCCTCCCTCTCATCAGTTCTATGGCCCAGACCCTCACACTCAGATCATCTTCTCAAAATTCGAGTGACAAGCCTGTAGCCCACGTCGTAGCAAACCACCAAGTGGAGGAGCAGCTGGAGTGGCTGAGCCAGCGCGCCAACGCCCTCCTGGCCAACGGCATGGATCTCAAAGACAACCAACTAGTGGTGCCAGCCGATGGGTTGTACCTTGTCTACTCCCAGGTTCTCTTCAAGGGACAAGGCTGCCCCGACTACGTGCTCCTCACCCACACCGTCAGCCGATTTGCTATCTCATACCAGGAGAAAGTCAACCTCCTCTCTGCCGTCAAGAGCCCCTGCCCCAAGGACACCCCTGAGGGGGCTGAGCTCAAACCCTGGTATGAGCCCATATACCTGGGAGGAGTCTTCCAGCTGGAGAAGGGGGACCAACTCAGCGCTGAGGTCAATCTGCCCAAGTACTTAGACTTTGCGGAGTCCGGGCAGGTCTACTTTGGAGTCATTGCTCTGTGAAGGGAATGGGTGTTCATCCATTCTCTACCCAGCCCCCACTCTGACCCCTTTACTCTGACCCCTTTATTGTCTACTCCTCAGAGCCCCCAGTCTGTATCCTTCTAACTTAGAAAGGGGATTATGGCTCAGGGTCCAACTCTGTGCTCAGAGCTTTCAACAACTACTCAGAAACACAAGATGCTGGGACAGTGACCTGGACTGTGGGCCTCTCATGCACCACCATCAAGGACTCAAATGGGCTTTCCGAATTCACTGGAGCCTCGAATGTCCATTCCTGAGTTCTGCAAAGGGAGAGTGGTCAGGTTGCCTCTGTCTCAGAATGAGGCTGGATAAGATCTCAGGCCTTCCTACCTTCAGACCTTTCCAGATTCTTCCCTGAGGTGCAATGCACAGCCTTCCTCACAGAGCCAGCCCCCCTCTATTTATATTTGCACTTATTATTTATTATTTATTTATTATTTATTTATTTGCTTATGAATGTATTTATTTGGAAGGCCGGGGTGTCCTGGAGGACCCAGTGTGGGAAGCTGTCTTCAGACAGACATGTTTTCTGTGAAAACGGAGCTGAGCTGTCCCCACCTGGCCTCTCTACCTTGTTGCCTCCTCTTTTGCTTATGTTTAAAACAAAATATTTATCTAACCCAATTGTCTTAATAACGCTGATTTGGTGACCAGGCTGTCGCTACATCACTGAACCTCTGCTCCCCACGGGAGCCGTGACTGTAATCGCCCTACGGGTCATTGAGAGAAATAA"
-    gb = ["TAA","TGA","TAG"]
-    dictionary = getStartStopDic(sequence, 0)
-    calculateORF(sequence, dictionary)
+    record = SeqIO.parse("testfasta.fa", "fasta")
+    calculateORF(record)
 
 
-def calculateORF(sequence, dictionary):
-    print(dictionary)
-    
+def calculateORF(records):
+    orfobject_list = []
+    for record in records:
+        for strand, seq in (1, record.seq), (-1, record.seq.reverse_complement()):
+            for frame in range(3):
+                index = frame
+                while index < len(record) - 6:
+                    match = re.match('(ATG(?:\S{3})*?T(?:AG|AA|GA))', str(seq[index:]))
+                    if match:
+                        orf = match.group()
+                        index += len(orf)
+                        if len(orf) > 100:
+                            pos = str(record.seq).find(orf) + 1
+                            ORFobject = ORF(orf, len(orf), strand, frame, record.id)
+                            orfobject_list.append(ORFobject)
 
-def chunks(s, n):
-    """Produce `n`-character chunks from `s`."""
-    for start in range(0, len(s), n):
-        yield s[start:start+n]
-
-
-
-def getStartStopDic(sequence, frame):
-    startstop_codonsdict = {}
-    sequence_location = 0
-    pattern = re.compile('(ATG|TAG|TGA|TAA)')
-    for chunk in chunks(sequence, 3):
-        sequence_location+=3
-        if pattern.match(chunk):
-            startstop_codonsdict[sequence_location] = chunk
-    return startstop_codonsdict
+                    else:
+                        index += 3
+    return orfobject_list
 
 main()
