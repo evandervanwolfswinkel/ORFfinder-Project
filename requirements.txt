@@ -1,4 +1,4 @@
-Django==2.1.7
+Django==2.2rc1
 biopython==1.73
 numpy==1.16.2
 pip==9.0.1

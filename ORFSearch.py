@@ -1,4 +1,5 @@
 import re
+from io import StringIO
 
 import regex as re
 from Bio import SeqIO
@@ -6,12 +7,9 @@ from Bio import SeqIO
 from ORFObject import ORF
 
 
-def main():
-    record = SeqIO.parse("testfasta.fa", "fasta")
-    calculateORF(record)
-
-
-def calculateORF(records):
+def calculateORF(input):
+    fasta = StringIO(input)
+    records = SeqIO.parse(fasta, "fasta")
     orfobject_list = []
     for record in records:
         for strand, seq in (1, record.seq), (-1, record.seq.reverse_complement()):
@@ -31,4 +29,3 @@ def calculateORF(records):
                         index += 3
     return orfobject_list
 
-main()
