@@ -70,15 +70,16 @@
         <p class="font-weight-light">
         <h1>Or</h1></p>
     </div>
-    <form>
+    <form action="ORFresult/" method="get" id="fastaform">
+        {% csrf_token %}
         <div class="form-group">
         </div>
         <div class="text-center">
             <div class="col-5 mx-auto">
                 <label for="exampleFormControlTextarea1"><p class="font-weight-bolder">Use raw sequence data</p></label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="6"></textarea>
+                <textarea name="rawsequence" form="fastaform" class="form-control" rows="6"></textarea>
                 <br>
-                <button type="button" class="btn btn-primary">Search ORF's</button>
+                <button type="submit" name="searchorf" form="fastaform" class="btn btn-primary">Search ORF's</button>
             </div>
         </div>
     </form>
