@@ -4,3 +4,4 @@ numpy==1.16.2
 pip==9.0.1
 pytz==2018.9
 setuptools==28.8.0
+regex==2019.03.12

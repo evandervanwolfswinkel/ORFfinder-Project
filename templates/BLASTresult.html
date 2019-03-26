@@ -50,35 +50,6 @@
 
     </div>
 
-
-    <div class="text-center" class="p-3 mb-2 bg-light text-dark">
-        <h1 class="display-4">Upload Fasta file</h1>
-    </div>
-
-    <form>
-        <div class="col-5 mx-auto">
-            <input type="file" class="custom-file-input" id="customFile">
-            <label class="custom-file-label" for="customFile">Choose file </label>
-        </div>
-
-    </form>
-    <div class="text-center">
-        <p class="font-weight-light">
-        <h1>Or</h1></p>
-    </div>
-    <form action="ORFresult/" method="get" id="fastaform">
-        {% csrf_token %}
-        <div class="form-group">
-        </div>
-        <div class="text-center">
-            <div class="col-5 mx-auto">
-                <label for="exampleFormControlTextarea1"><p class="font-weight-bolder">Use raw sequence data</p></label>
-                <textarea name="rawsequence" form="fastaform" class="form-control" rows="6"></textarea>
-                <br>
-                <button type="submit" name="searchorf" form="fastaform" class="btn btn-primary">Search ORF's</button>
-            </div>
-        </div>
-    </form>
 </div>
 </body>
 </html>
