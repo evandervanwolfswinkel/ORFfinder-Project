@@ -1,13 +1,24 @@
 from Bio.Blast import NCBIWWW
 from Bio.Blast import NCBIXML
 from BLASTobject import blast
+from io import StringIO
+from Bio import SeqIO
 
+from ORFObject import ORF
 
-
-def main(s):
+def BLASTorf(s):
     blast_result_list =[]
     E_value_thresh = 0.04
     input = s
+    fasta = ""
+    for ORF in input:
+        ORFseq = ORF.get_sequence()
+        ORFheader = ORF.get_header()
+        fasta+=ORFheader +"\n"
+        fasta+=ORFseq +"\n"
+    fastaformat = StringIO(fasta)
+    records = SeqIO.parse(fastaformat, "fasta")
+
     print(input)
     result_handle = NCBIWWW.qblast("blastn", "nt", "8332116")
     with open("my_blast_result.xml", "w") as out_handle:
@@ -39,6 +50,6 @@ def main(s):
 
     return blast_result_list
 
-main("ATGAAAACCAAAAA")
+BLASTorf("ATGAAAACCAAAAA")
 
 
