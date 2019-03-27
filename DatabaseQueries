@@ -10,7 +10,7 @@ Sequentie tabel
 
 vul EERST de sequentie tabel, dan de orf tabel
 
-INSERT INTO ORF
+INSERT INTO orf
     (ORF_ID, ORF_start, ORF_stop, Sequentie_Sequentie_ID)
     VALUES
     (1, 15, 789, 1)
@@ -18,3 +18,10 @@ INSERT INTO ORF
 INSERT INTO sequentie
 (Sequentie_ID, Sequentie_header, Sequentie)
 VALUES (1, '>Dit is een test sequentie','ATCGTAGCT')
+
+
+DELETE FROM orf
+WHERE ORF_ID = 1;
+
+DELETE FROM sequentie
+WHERE Sequentie_ID = 1;
