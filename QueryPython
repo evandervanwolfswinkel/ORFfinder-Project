@@ -15,24 +15,24 @@ WHERE ORF_ID = 1;
 DELETE FROM sequentie
 WHERE Sequentie_ID = 1;
 
-//connecting to the ORF database in python
+//connectie aan de ORF database in python
 import mysql.connector
 conn = mysql.connector.connect(
     host = "hannl-hlo-bioinformatica-mysqlsrv.mysql.database.azure.com",
     user = "owe7_pg8@hannl-hlo-bioinformatica-mysqlsrv",
     db = "owe7_pg8")
 cursor = conn.cursor()
-//insert blast results into database
+//insert blast resultaten in de database
 cursor.execute("""INSERT INTO sequentie
                 (Sequentie_ID, Sequentie_header, Sequentie)
-                VALUES ()
+                VALUES ("""+seqidvariabelenaam+""","""+seqheadervariabelenaam+""","""+sequentievariabelenaam+""")
                 INSERT INTO orf
                 (ORF_ID, ORF_start, ORF_stop, Sequentie_Sequentie_ID)
-                VALUES ()""")
+                VALUES ("""+orfidvariabelenaam+""","""+orfstartvariabelenaam+""","""+orfstopvariabelenaam+""","""+seqidvariabelenaam+""")""")
 cursor.close()
 conn.close()
 
-//connecting to the ORF database in python
+//connectie aan de ORF database in python
 import mysql.connector
 conn = mysql.connector.connect(
     host = "hannl-hlo-bioinformatica-mysqlsrv.mysql.database.azure.com",
