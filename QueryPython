@@ -2,11 +2,11 @@
 INSERT INTO orf
     (ORF_ID, ORF_start, ORF_stop, Sequentie_Sequentie_ID)
     VALUES
-    (1, 15, 789, 1)
+    (int, int, int, int)
     
 INSERT INTO sequentie
 (Sequentie_ID, Sequentie_header, Sequentie)
-VALUES (1, '>Dit is een test sequentie','ATCGTAGCT')
+VALUES (int, '>String','String')
 
 
 DELETE FROM orf
