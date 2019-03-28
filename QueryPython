@@ -1,4 +1,4 @@
-//SQL queries
+#SQL queries
 INSERT INTO orf
     (ORF_ID, ORF_start, ORF_stop, Sequentie_Sequentie_ID)
     VALUES
@@ -15,31 +15,32 @@ DELETE FROM sequentie
 WHERE Sequentie_ID = 1;
 --------------------------------------------------------------------------------------------------------------------------------------
 
-//connectie aan de ORF database in python
+#connectie aan de ORF database in python
 import mysql.connector
 conn = mysql.connector.connect(
     host = "hannl-hlo-bioinformatica-mysqlsrv.mysql.database.azure.com",
     user = "owe7_pg8@hannl-hlo-bioinformatica-mysqlsrv",
     db = "owe7_pg8")
 cursor = conn.cursor()
-//insert blast resultaten in de database
+#insert blast resultaten in de database
 cursor.execute("""INSERT INTO sequentie
                 (Sequentie_ID, Sequentie_header, Sequentie)
                 VALUES ("""+seqidvariabelenaam+""","""+seqheadervariabelenaam+""","""+sequentievariabelenaam+""")
                 INSERT INTO orf
                 (ORF_ID, ORF_start, ORF_stop, Sequentie_Sequentie_ID)
                 VALUES ("""+orfidvariabelenaam+""","""+orfstartvariabelenaam+""","""+orfstopvariabelenaam+""","""+seqidvariabelenaam+""")""")
+#connectie sluiten
 cursor.close()
 conn.close()
 
-//connectie aan de ORF database in python
+#connectie aan de ORF database in python
 import mysql.connector
 conn = mysql.connector.connect(
     host = "hannl-hlo-bioinformatica-mysqlsrv.mysql.database.azure.com",
     user = "owe7_pg8@hannl-hlo-bioinformatica-mysqlsrv",
     db = "owe7_pg8")
 cursor = conn.cursor()
-//resultaten ophalen uit de database
+#resultaten ophalen uit de database
 cursor.execute("""SELECT *
                 FROM sequentie
                 WHERE Sequentie_header = """+headervariabelenaam+"""
@@ -49,11 +50,12 @@ cursor.execute("""SELECT *
                 WHERE ORF_ID = """+seqidvariabelenaam+"""
                 //stop het in een variabele om te printen
                 """)
+#connectie sluiten
 cursor.close()
 conn.close()
 --------------------------------------------------------------------------------------------------------------------------------------
 
-//checken of deze sequentie al een keer geblast is
+#checken of deze sequentie al een keer geblast is
 sequentie = input("Geef uw sequentie op")
 sequentie_header = input("Geef uw gewenste header op")
 if sequentievariabelenaam == sequentie:
@@ -62,7 +64,7 @@ else:
     print("Deze sequentie staat nog niet in onze database! Wij gaan nu voor u blasten...")
 --------------------------------------------------------------------------------------------------------------------------------------
 
-//bovenste 2 scripts gedeeltelijk samengevoegd
+#bovenste 2 scripts gedeeltelijk samengevoegd
 sequentie = input("Geef uw sequentie op")
 sequentie_header = input("Geef uw gewenste header op")
 if sequentievariabelenaam == sequentie:
@@ -73,7 +75,7 @@ if sequentievariabelenaam == sequentie:
         user = "owe7_pg8@hannl-hlo-bioinformatica-mysqlsrv",
         db = "owe7_pg8")
     cursor = conn.cursor()
-    //resultaten ophalen uit de database
+    #resultaten ophalen uit de database
     cursor.execute("""SELECT *
                     FROM sequentie
                     WHERE Sequentie_header = """+headervariabelenaam+"""
@@ -88,21 +90,21 @@ if sequentievariabelenaam == sequentie:
     print(de variabelen uit de database hier)
 else:
     print("Deze sequentie staat nog niet in onze database! Wij gaan nu voor u blasten...")
-    //eerst blast script en dan deze:
+    #eerst blast script en dan deze:
     import mysql.connector
     conn = mysql.connector.connect(
         host = "hannl-hlo-bioinformatica-mysqlsrv.mysql.database.azure.com",
         user = "owe7_pg8@hannl-hlo-bioinformatica-mysqlsrv",
         db = "owe7_pg8")
     cursor = conn.cursor()
-    //insert blast resultaten in de database
+    #insert blast resultaten in de database
     cursor.execute("""INSERT INTO sequentie
                     (Sequentie_ID, Sequentie_header, Sequentie)
                     VALUES ("""+seqidvariabelenaam+""","""+seqheadervariabelenaam+""","""+sequentievariabelenaam+""")
                     INSERT INTO orf
                     (ORF_ID, ORF_start, ORF_stop, Sequentie_Sequentie_ID)
                     VALUES ("""+orfidvariabelenaam+""","""+orfstartvariabelenaam+""","""+orfstopvariabelenaam+""","""+seqidvariabelenaam+""")""")
-        //resultaten ophalen uit de database
+    #resultaten ophalen uit de database
     cursor.execute("""SELECT *
                     FROM sequentie
                     WHERE Sequentie_header = """+headervariabelenaam+"""
