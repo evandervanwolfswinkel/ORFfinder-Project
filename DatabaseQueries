@@ -9,6 +9,7 @@ Sequentie tabel
   Sequentie
 
 vul EERST de sequentie tabel, dan de orf tabel
+Sequentie_Sequentie_ID koppelt het orf object aan het sequentie object
 
 INSERT INTO orf
     (ORF_ID, ORF_start, ORF_stop, Sequentie_Sequentie_ID)
