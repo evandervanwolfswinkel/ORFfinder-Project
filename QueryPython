@@ -85,6 +85,7 @@ if sequentievariabelenaam == sequentie:
                     """)
     cursor.close()
     conn.close()
+    print(de variabelen uit de database hier)
 else:
     print("Deze sequentie staat nog niet in onze database! Wij gaan nu voor u blasten...")
     //eerst blast script en dan deze:
@@ -113,7 +114,7 @@ else:
                     """)
     cursor.close()
     conn.close()
-
+    print(de variabelen uit de database hier)
 
 
 
