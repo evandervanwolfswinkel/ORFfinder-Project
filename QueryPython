@@ -71,9 +71,10 @@ if sequentievariabelenaam == sequentie:
     print("Deze sequentie staat al in onze database! Wij halen de informatie voor u op...")   
     import mysql.connector
     conn = mysql.connector.connect(
-        host = "hannl-hlo-bioinformatica-mysqlsrv.mysql.database.azure.com",
-        user = "owe7_pg8@hannl-hlo-bioinformatica-mysqlsrv",
-        db = "owe7_pg8")
+        host = 'hannl-hlo-bioinformatica-mysqlsrv.mysql.database.azure.com',
+        user = 'owe7_pg8@hannl-hlo-bioinformatica-mysqlsrv',
+        db = 'owe7_pg8',
+        port = 3306)
     cursor = conn.cursor()
     #resultaten ophalen uit de database
     cursor.execute("""SELECT *
@@ -93,9 +94,10 @@ else:
     #eerst blast script en dan deze:
     import mysql.connector
     conn = mysql.connector.connect(
-        host = "hannl-hlo-bioinformatica-mysqlsrv.mysql.database.azure.com",
-        user = "owe7_pg8@hannl-hlo-bioinformatica-mysqlsrv",
-        db = "owe7_pg8")
+        host = 'hannl-hlo-bioinformatica-mysqlsrv.mysql.database.azure.com',
+        user = 'owe7_pg8@hannl-hlo-bioinformatica-mysqlsrv',
+        db = 'owe7_pg8',
+        port = 3306)
     cursor = conn.cursor()
     #insert blast resultaten in de database
     cursor.execute("""INSERT INTO sequentie
