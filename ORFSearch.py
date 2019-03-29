@@ -1,14 +1,28 @@
+import pickle
 import re
 from io import StringIO
 
-import regex as re
 from Bio import SeqIO
 
 from ORFObject import ORF
 
 
-def calculateORF(input):
-    fasta = StringIO(input)
+def serializeORF(input):
+    with open('serORF', 'wb') as serializedORFfile:
+        pickle.dump(input, serializedORFfile)
+
+
+def deserializeORF():
+    with open('serORF', 'rb') as serializedORFfile:
+        orf_list = pickle.load(serializedORFfile)
+    return orf_list
+
+
+def calculateORF(input, inputtype):
+    if inputtype == "raw":
+        fasta = StringIO(input)
+    if inputtype == "file":
+        fasta = StringIO(input.decode('utf-8'))
     records = SeqIO.parse(fasta, "fasta")
     orfobject_list = []
     for record in records:

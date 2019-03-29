@@ -51,5 +51,32 @@
     </div>
 
 </div>
+<br>
+<table class="table table-bordered table-striped " bgcolor="white">
+    <tr>
+        <th>Sequentie Naam</th>
+        <th>Length</th>
+        <th>E-value</th>
+
+    </tr>
+    <td>
+        {% for blast in blast_results %}
+            {{ blast.get_sequenceName }}
+            <br>
+        {% endfor %}
+    </td>
+    <td>
+        {% for blast in blast_results %}
+            {{ blast.get_length }}
+            <br>
+        {% endfor %}
+    </td>
+    <td>
+        {% for blast in blast_results %}
+            {{ blast.get_Evalue }}
+            <br>
+        {% endfor %}
+    </td>
+</table>
 </body>
 </html>
