@@ -1,0 +1,59 @@
+import pickle
+import re
+from io import StringIO
+
+from Bio import SeqIO
+
+from ORFObject import ORF
+
+
+# Auteur: Evander van Wolfswinkel
+# Created: 22-3-2019
+# Functionality: Searches a fasta input on Open Reading Frames
+# (ORF), also creates ORFObjects and can de/serialize them
+# Known Bugs: No known Bugs
+
+# Serializes ORF object list into a file
+def serializeORF(input):
+    with open('serORF', 'wb') as serializedORFfile:
+        pickle.dump(input, serializedORFfile)
+
+
+# Deserializes ORF object list into a file
+def deserializeORF():
+    with open('serORF', 'rb') as serializedORFfile:
+        orf_list = pickle.load(serializedORFfile)
+    return orf_list
+
+
+# Calculates ORF for input, supports both raw fasta input
+# and byte input from file
+# Returns ORF object list
+def calculateORF(input, inputtype):
+    if inputtype == "raw":
+        fasta = StringIO(input)
+    if inputtype == "file":
+        fasta = StringIO(input.decode('utf-8'))
+        """If byte type, decode to utf-8"""
+    records = SeqIO.parse(fasta, "fasta")
+    orfobject_list = []
+    for record in records:
+        for strand, seq in (1, record.seq), (-1, record.seq.reverse_complement()):
+            for frame in range(3):
+                index = frame
+                while index < len(record) - 6:
+                    match = re.match('(ATG(?:\S{3})*?T(?:AG|AA|GA))', str(seq[index:]))
+                    if match:
+                        orf = match.group()
+                        index += len(orf)
+                        if len(orf) > 100:
+                            pos = str(record.seq).find(orf) + 1
+                            ORFobject = ORF(orf, len(orf), strand, frame, record.id)
+                            """ORF objects made and then added"""
+                            orfobject_list.append(ORFobject)
+                            """to orfobject_list"""
+
+                    else:
+                        index += 3
+    return orfobject_list
+

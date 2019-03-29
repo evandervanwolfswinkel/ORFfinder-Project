@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+# These patterns are used as standards for later URL routing
 urlpatterns = [
     path('ORFfinder/',include('ORFfinder.urls')),
     path('admin/', admin.site.urls),
