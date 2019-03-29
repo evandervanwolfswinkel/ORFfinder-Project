@@ -1,3 +1,7 @@
+# Auteur: Evander van Wolfswinkel
+# Created: 22-3-2019
+# Functionality: Object for storing ORF information
+# Known Bugs: No known Bugs
 class ORF:
     def __init__(self, sequence, length, strand, frame, header):
         self.__sequence = sequence

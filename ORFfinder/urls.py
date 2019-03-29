@@ -2,6 +2,12 @@ from django.urls import path
 
 from . import views
 
+# Auteur: Evander van Wolfswinkel
+# Created: 2-3-2019
+# Functionality: URL patterns created for different views,
+# these patterns are linked to corresponding HTML templates
+# Known Bugs: No known Bugs
+
 urlpatterns = [
     path('', views.index, name='index'),
     path('ORFresult/', views.ORFresult, name='ORFresult'),

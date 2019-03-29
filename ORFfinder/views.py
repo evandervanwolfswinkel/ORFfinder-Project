@@ -5,6 +5,12 @@ import ORFSearch
 import SearchGenefunction
 
 
+# Auteur: Evander van Wolfswinkel
+# Created: 2-3-2019
+# Functionality: Used to render views that are linked to URL's
+# Known Bugs: No known Bugs
+
+
 def index(request):
     return render(request, "index.html")
 
