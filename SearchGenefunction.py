@@ -4,7 +4,7 @@ from io import StringIO
 from Bio.Blast import NCBIWWW
 from Bio.Blast import NCBIXML
 
-from BLASTobject import blast
+from BLASTObject import blast
 
 
 # Auteur: Jung Ho Loos, Evander van Wolfswinkel
@@ -74,7 +74,8 @@ def BLASTorf(input):    #input a list of ORF_objects
     result_handle.close()
     result_handle = open("my_blast_result.xml", 'r')            #reads the XML file
     blast_records = NCBIXML.parse(result_handle)
-    for blast_record in blast_records:                           #creates blast objects and saves them in the blast_result_list
+    for blast_record in blast_records:
+        for alignment in blast_record.alignments:  # creates blast objects and saves them in the blast_result_list
             for hsp in alignment.hsps:
                 if hsp.expect < E_value_thresh:
                     sequenceName = alignment.title

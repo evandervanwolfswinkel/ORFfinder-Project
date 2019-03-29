@@ -18,16 +18,17 @@ def storeORFS(orf_list):
     conn = mysql.connector.connect(
         host="hannl-hlo-bioinformatica-mysqlsrv.mysql.database.azure.com",
         user="owe7_pg8@hannl-hlo-bioinformatica-mysqlsrv",
-        passwd="blaat1234"
-        db="owe7_pg8",
-        port=3306)
+        passwd="blaat1234",
+        db="owe7_pg8")
     cursor = conn.cursor()
     for orf in orf_list:
         cursor.execute("""INSERT INTO sequentie (Sequentie_ID, Sequentie_header, Sequentie)
-                VALUES (""" + orf.get_header() + """,""" + orf.get_header() + """,""" + orf.set_sequence() + """)
+                VALUES (""" + str(orf.get_header()) + """,""" + str(orf.get_header()) + """,""" + str(
+            orf.get_sequence()) + """)
                 INSERT INTO orf
                 (ORF_ID, ORF_start, ORF_stop, Sequentie_Sequentie_ID)
-                VALUES (""" + orf.get_header() + """,""" + orf.get_frame() + """,""" + orf.get_length() + """,""" + orf.get_header() + """)""")
+                VALUES (""" + str(orf.get_header()) + """,""" + str(orf.get_frame()) + """,""" + str(
+            orf.get_length()) + """,""" + str(orf.get_header()) + """)""")
     cursor.close()
     conn.close()
 
