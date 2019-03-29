@@ -7,6 +7,15 @@ from Bio.Blast import NCBIXML
 from BLASTobject import blast
 
 
+# Auteur: Jung Ho Loos, Evander van Wolfswinkel
+# Created: 27-3-2019
+# Functionality: Blasts both raw fasta input and ORF objects list
+# input and returns the information in blast objects list
+# Known Bugs: No known Bugs
+
+# Blasts raw fasta input, saves it to temporary file and then
+# Uses NCBIWWW.qblast to blast for gene function
+# Returns: Blast object list
 def BLASTraw(input):                                #input is a raw sequence
     if os.path.exists("tempfasta.fa"):
         os.remove("tempfasta.fa")                   #removes existing tempfasta file
@@ -38,7 +47,9 @@ def BLASTraw(input):                                #input is a raw sequence
 
     return blast_result_list            #returns blast_result_list as output
 
-
+# Blasts orf object list input, saves it to temporary file and then
+# Uses NCBIWWW.qblast to blast for gene function
+# Returns: Blast object list
 def BLASTorf(input):    #input a list of ORF_objects 
     if os.path.exists("tempfasta.fa"):
         os.remove("tempfasta.fa")               #removes existing tempfasta file
