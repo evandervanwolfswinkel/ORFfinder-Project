@@ -8,26 +8,26 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema owe7_pg8
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema owe7_pg8
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
-USE `mydb` ;
+CREATE SCHEMA IF NOT EXISTS `owe7_pg8` DEFAULT CHARACTER SET utf8 ;
+USE `owe7_pg8` ;
 
 -- -----------------------------------------------------
--- Table `mydb`.`ORF`
+-- Table `owe7_pg8`.`ORF`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`ORF` (
+CREATE TABLE IF NOT EXISTS `owe7_pg8`.`ORF` (
   `ORF_id` INT NOT NULL,
   `ORF_start` INT NOT NULL,
   `ORF_stop` INT NOT NULL,
   `Sequentie_Sequentie_ID` INT NOT NULL,
   PRIMARY KEY (`ORF_id`, `Sequentie_Sequentie_ID`),
-  UNIQUE INDEX `ORF_id_UNIQUE` (`ORF_id` ASC) VISIBLE,
-  INDEX `fk_ORF_Sequentie_idx` (`Sequentie_Sequentie_ID` ASC) VISIBLE,
+  UNIQUE INDEX `ORF_id_UNIQUE` (`ORF_id` ASC),
+  INDEX `fk_ORF_Sequentie_idx` (`Sequentie_Sequentie_ID` ASC),
   CONSTRAINT `fk_ORF_Sequentie`
     FOREIGN KEY (`Sequentie_Sequentie_ID`)
     REFERENCES `mydb`.`Sequentie` (`Sequentie_ID`)
@@ -37,28 +37,28 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Sequentie`
+-- Table `owe7_pg8`.`Sequentie`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Sequentie` (
   `Sequentie_ID` INT NOT NULL,
   `Sequentie_header` VARCHAR(500) NULL,
   `Sequentie` VARCHAR(1000) NOT NULL,
   PRIMARY KEY (`Sequentie_ID`),
-  UNIQUE INDEX `Sequentie_ID_UNIQUE` (`Sequentie_ID` ASC) VISIBLE)
+  UNIQUE INDEX `Sequentie_ID_UNIQUE` (`Sequentie_ID` ASC))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`ORF`
+-- Table `owe7_pg8`.`ORF`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`ORF` (
+CREATE TABLE IF NOT EXISTS `owe7_pg8`.`ORF` (
   `ORF_id` INT NOT NULL,
   `ORF_start` INT NOT NULL,
   `ORF_stop` INT NOT NULL,
   `Sequentie_Sequentie_ID` INT NOT NULL,
   PRIMARY KEY (`ORF_id`, `Sequentie_Sequentie_ID`),
-  UNIQUE INDEX `ORF_id_UNIQUE` (`ORF_id` ASC) VISIBLE,
-  INDEX `fk_ORF_Sequentie_idx` (`Sequentie_Sequentie_ID` ASC) VISIBLE,
+  UNIQUE INDEX `ORF_id_UNIQUE` (`ORF_id` ASC),
+  INDEX `fk_ORF_Sequentie_idx` (`Sequentie_Sequentie_ID` ASC),
   CONSTRAINT `fk_ORF_Sequentie`
     FOREIGN KEY (`Sequentie_Sequentie_ID`)
     REFERENCES `mydb`.`Sequentie` (`Sequentie_ID`)
