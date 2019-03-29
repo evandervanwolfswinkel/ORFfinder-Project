@@ -34,6 +34,7 @@ def calculateORF(input, inputtype):
         fasta = StringIO(input)
     if inputtype == "file":
         fasta = StringIO(input.decode('utf-8'))
+        """If byte type, decode to utf-8"""
     records = SeqIO.parse(fasta, "fasta")
     orfobject_list = []
     for record in records:
@@ -48,7 +49,9 @@ def calculateORF(input, inputtype):
                         if len(orf) > 100:
                             pos = str(record.seq).find(orf) + 1
                             ORFobject = ORF(orf, len(orf), strand, frame, record.id)
+                            """ORF objects made and then added"""
                             orfobject_list.append(ORFobject)
+                            """to orfobject_list"""
 
                     else:
                         index += 3
