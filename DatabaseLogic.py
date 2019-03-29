@@ -18,6 +18,7 @@ def storeORFS(orf_list):
     conn = mysql.connector.connect(
         host="hannl-hlo-bioinformatica-mysqlsrv.mysql.database.azure.com",
         user="owe7_pg8@hannl-hlo-bioinformatica-mysqlsrv",
+        passwd="blaat1234"
         db="owe7_pg8",
         port=3306)
     cursor = conn.cursor()
