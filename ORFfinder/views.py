@@ -10,19 +10,22 @@ import SearchGenefunction
 # Functionality: Used to render views that are linked to URL's
 # Known Bugs: No known Bugs
 
-
+# Renders index frontpage
 def index(request):
     return render(request, "index.html")
 
 
+# Renders gene function page
 def gene_function(request):
     return render(request, "gene_function.html")
 
 
+# Renders saved sequences page
 def saved_sequences(request):
     return render(request, "saved_sequences.html")
 
 
+# Renders about page
 def about(request):
     return render(request, "about.html")
 
@@ -30,29 +33,40 @@ def about(request):
 # Renders result page, handles 2 forms, one for file input and one for raw sequence input, when no value is given;
 # - >render empty result page
 def ORFresult(request):
-    try:
+    try:  # Try to get data from HTML forms using both raw input and file input
         if request.method == "POST":
+            """If request method is POST; Check for file input and read raw sequence."""
             rawsequence = request.FILES['fasta'].read()
-            inputtype = "file"
+            inputtype = "file"  # Defines file input type
         if request.method == "GET":
+            """If request method is GET; Check for raw input and use that."""
             rawsequence = request.GET.get("rawsequence")
-            inputtype = "raw"
-    except MultiValueDictKeyError:
+            inputtype = "raw"  # Defines raw input type
+    except MultiValueDictKeyError:  # Raise MultiValueDictKeyError when input is not given, render empty result page
         return render(request, "ORFresult.html")
     orf_list = ORFSearch.calculateORF(rawsequence, inputtype)
+    """Calculates ORF based on the sequence and it's input type, input type is necessary for pre-processing."""
     ORFSearch.serializeORF(orf_list)
+    """Serializes ORF list for later use"""
     return render(request, "ORFresult.html", {'orf_list': orf_list})
 
 
 # Renders result from blasting found ORF's
 def Blastresult(request):
     orf_list = ORFSearch.deserializeORF()
+    """Deserializes ORF list into memory for use."""
     blast_results = SearchGenefunction.BLASTorf(orf_list)
+    """Creates blast result list using ORF list input."""
     return render(request, "BLASTresult.html", {'blast_results': blast_results})
 
 
 # Renders result from blasting raw fasta sequence
 def GeneFunctionresult(request):
-    rawsequence = request.GET.get('rawsequence')
-    blast_results = SearchGenefunction.BLASTraw(str(rawsequence))
-    return render(request, "BLASTresult.html", {'blast_results': blast_results})
+    try:  # Try to get data from HTML form
+        rawsequence = request.GET.get('rawsequence')
+        """Uses GET method to get raw Fasta data from HTML form."""
+        blast_results = SearchGenefunction.BLASTraw(str(rawsequence))
+        """Creates blast result list using str input."""
+        return render(request, "BLASTresult.html", {'blast_results': blast_results})
+    except ValueError:  # Raise ValueError when no data is derived from HTML form, render empty result page instead
+        return render(request, "BLASTresult.html")
