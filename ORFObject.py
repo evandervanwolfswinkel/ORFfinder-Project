@@ -11,8 +11,6 @@ class ORF:
         self.__frame = frame
         self.__header = header
 
-
-""" Getters and setters for storing ORF related information"""
     def get_sequence(self):
         return self.__sequence
 
