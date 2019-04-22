@@ -51,5 +51,23 @@
     </div>
 
 </div>
+<div class="text-center">
+    <div class="col-5 mx-auto">
+        <br>
+        <form action="/ORFfinder/Savedsequences/Result/" method="get" id="dbsaveform">
+            {% csrf_token %}
+            <div class="btn-group align-right">
+                <button type="submit" name="dbsave" form="dbsaveform" class="btn btn-primary text-center">Load all saved
+                    ORF's
+                </button>
+            </div>
+        </form>
+        <br>
+
+
+    </div>
+</div>
+
+
 </body>
 </html>

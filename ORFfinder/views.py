@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.utils.datastructures import MultiValueDictKeyError
 
+import DatabaseLogic
 import ORFSearch
 import SearchGenefunction
 
@@ -25,10 +26,28 @@ def saved_sequences(request):
     return render(request, "saved_sequences.html")
 
 
+def saved_sequences_result(request):
+    try:
+        orf_list = DatabaseLogic.loadORFS()
+        return render(request, "ORFresult.html", {'orf_list': orf_list})
+    except:
+        return render(request, "error.html")
+
+
+
 # Renders about page
 def about(request):
     return render(request, "about.html")
 
+
+# Renders either a succes page, notifing that all orfs have been saved, or if operations was not succesfull an error page.
+def ORFsaved(request):
+    orf_list = ORFSearch.deserializeORF()
+    try:
+        DatabaseLogic.storeORFS(orf_list)
+        return render(request, "ORFsaved.html")
+    except:
+        return render(request, "error.html")
 
 # Renders result page, handles 2 forms, one for file input and one for raw sequence input, when no value is given;
 # - >render empty result page
@@ -47,17 +66,21 @@ def ORFresult(request):
     orf_list = ORFSearch.calculateORF(rawsequence, inputtype)
     """Calculates ORF based on the sequence and it's input type, input type is necessary for pre-processing."""
     ORFSearch.serializeORF(orf_list)
-    """Serializes ORF list for later use"""
+    """Serializes ORF list for later use."""
     return render(request, "ORFresult.html", {'orf_list': orf_list})
 
 
 # Renders result from blasting found ORF's
 def Blastresult(request):
-    orf_list = ORFSearch.deserializeORF()
-    """Deserializes ORF list into memory for use."""
-    blast_results = SearchGenefunction.BLASTorf(orf_list)
-    """Creates blast result list using ORF list input."""
-    return render(request, "BLASTresult.html", {'blast_results': blast_results})
+    try:
+        orf_list = ORFSearch.deserializeORF()
+        """Deserializes ORF list into memory for use."""
+        blast_results = SearchGenefunction.BLASTorf(orf_list)
+        """Creates blast result list using ORF list input."""
+        return render(request, "BLASTresult.html", {'blast_results': blast_results})
+    except ValueError:
+        return render(request, "BLASTresult.html")
+
 
 
 # Renders result from blasting raw fasta sequence

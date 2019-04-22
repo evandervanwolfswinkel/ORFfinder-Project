@@ -15,6 +15,8 @@ urlpatterns = [
     path('Genefunction/', views.gene_function, name='gene_function'),
     path('Genefunction/Result/', views.GeneFunctionresult, name='gene_functionresult'),
     path('Savedsequences/', views.saved_sequences, name='saved_sequences'),
+    path('Savedsequences/Result/', views.saved_sequences_result, name='saved_sequences_result'),
+    path('ORFresult/ORFsaved/', views.ORFsaved, name='ORFsaved'),
     path('About/', views.about, name='about')
 
 
