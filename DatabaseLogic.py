@@ -5,6 +5,8 @@ import mysql.connector
 from ORFObject import ORF
 
 
+# Auteur: Evander van Wolfswinkel
+
 def defineConnection():
     conn = mysql.connector.connect(
         host="hannl-hlo-bioinformatica-mysqlsrv.mysql.database.azure.com",

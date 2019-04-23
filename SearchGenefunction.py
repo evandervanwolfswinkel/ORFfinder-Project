@@ -7,7 +7,7 @@ from Bio.Blast import NCBIXML
 from BLASTObject import blast
 
 
-# Auteur: Jung Ho Loos, Evander van Wolfswinkel
+# Auteur: Evander van Wolfswinkel
 # Created: 27-3-2019
 # Functionality: Blasts both raw fasta input and ORF objects list
 # input and returns the information in blast objects list
@@ -16,26 +16,41 @@ from BLASTObject import blast
 # Blasts raw fasta input, saves it to temporary file and then
 # Uses NCBIWWW.qblast to blast for gene function
 # Returns: Blast object list
-def BLASTraw(input):                                #input is a raw sequence
+
+def removeTempfasta():
+    """If temporary fasta exists, delete it"""
     if os.path.exists("tempfasta.fa"):
-        os.remove("tempfasta.fa")                   #removes existing tempfasta file
-    if os.path.exists("my_blast_result.xml"):
-        os.remove("my_blast_result.xml")            #removes existing my_blast_result.xml file
-    blast_result_list = []                          
-    E_value_thresh = 0.04                           #chosen E-value           
-    fasta = input                                   #create a new fasta file
-    fastaformat = StringIO(fasta)
+        os.remove("tempfasta.fa")
+
+
+def setEvalue():
+    """Set the E-value and return it"""
+    E_value_thresh = 0.04
+    return E_value_thresh
+
+
+def writeTempfasta(stringiofasta):
+    """Write a temporary fasta file (needed for blast)"""
     with open("tempfasta.fa", 'a') as fastafile:
-        fastafile.write(fastaformat.getvalue())
-    fasta_string = open("tempfasta.fa").read()      #reads created fasta file
-    result_handle = NCBIWWW.qblast("blastn", "nt", fasta_string)    #BLAST using the fastafile
-    print("done")
-    with open("my_blast_result.xml", "w") as out_handle:            #saves BLAST output as XML file, my_blast_result.xml
-        out_handle.write(result_handle.read())
-    result_handle.close()
-    result_handle = open("my_blast_result.xml", 'r')                #reads the XML file
-    blast_records = NCBIXML.parse(result_handle)
-    for blast_record in blast_records:                              #creates blast objects and saves them in the blast_result_list
+        fastafile.write(stringiofasta.getvalue())
+
+
+def openTempfasta():
+    """Open temporary fasta file"""
+    fasta_string = open("tempfasta.fa").read()
+    return fasta_string
+
+
+def performQBlast(fastafile):
+    """Perform qblast on fastafile"""
+    result_handle = NCBIWWW.qblast("blastn", "nt", fastafile)
+    return result_handle
+
+
+def iterateBlastrecord(blast_records, E_value_thresh):
+    """Iterates the blast record and puts the information into a Blast object list"""
+    blast_result_list = []
+    for blast_record in blast_records:
         for alignment in blast_record.alignments:
             for hsp in alignment.hsps:
                 if hsp.expect < E_value_thresh:
@@ -44,44 +59,42 @@ def BLASTraw(input):                                #input is a raw sequence
                     Evalue = hsp.expect
                     blastresult = blast(sequenceName, length, Evalue)
                     blast_result_list.append(blastresult)
+    return blast_result_list
 
-    return blast_result_list            #returns blast_result_list as output
 
-# Blasts orf object list input, saves it to temporary file and then
-# Uses NCBIWWW.qblast to blast for gene function
-# Returns: Blast object list
-def BLASTorf(input):    #input a list of ORF_objects 
-    if os.path.exists("tempfasta.fa"):
-        os.remove("tempfasta.fa")               #removes existing tempfasta file
-    if os.path.exists("my_blast_result.xml"):
-        os.remove("my_blast_result.xml")        #removes existing my_blast_result.sml file
-    blast_result_list = []                      
-    E_value_thresh = 0.04                       #chosen E-value
-    fasta = ""                                  #create a new fasta file                
+def transformORFtoFasta(input):
+    """Transforms the ORFs into a fasta so it can be blasted"""
+    fasta = ""
     for ORF in input:
         ORFseq = ORF.get_sequence()
         ORFheader = ORF.get_header()
         fasta += ">" + ORFheader + "\n"
         fasta += ORFseq + "\n"
-    fastaformat = StringIO(fasta)
-    with open("tempfasta.fa", 'a') as fastafile:
-        fastafile.write(fastaformat.getvalue())
-    fasta_string = open("tempfasta.fa").read()          #reads created fasta file
-    result_handle = NCBIWWW.qblast("blastn", "nt", fasta_string)    #BLAST using the fastafile
-    print("done")
-    with open("my_blast_result.xml", "w") as out_handle:        #saves BLAST output as XML file, my_blast_result.xml
-        out_handle.write(result_handle.read())      
-    result_handle.close()
-    result_handle = open("my_blast_result.xml", 'r')            #reads the XML file
-    blast_records = NCBIXML.parse(result_handle)
-    for blast_record in blast_records:
-        for alignment in blast_record.alignments:  # creates blast objects and saves them in the blast_result_list
-            for hsp in alignment.hsps:
-                if hsp.expect < E_value_thresh:
-                    sequenceName = alignment.title
-                    length = alignment.length
-                    Evalue = hsp.expect
-                    blastresult = blast(sequenceName, length, Evalue)
-                    blast_result_list.append(blastresult)
+    return fasta
 
-    return blast_result_list            #returns blast_result_list as output
+
+def BLASTraw(fasta):
+    """Blast raw fasta sequence input"""
+    removeTempfasta()
+    E_value_thresh = setEvalue()
+    writeTempfasta(StringIO(fasta))
+    result_handle = performQBlast(openTempfasta())
+    blast_records = NCBIXML.parse(result_handle)
+    blast_result_list = iterateBlastrecord(blast_records, E_value_thresh)
+    result_handle.close()
+    return blast_result_list
+
+# Blasts orf object list input, saves it to temporary file and then
+# Uses NCBIWWW.qblast to blast for gene function
+# Returns: Blast object list
+def BLASTorf(input):
+    """Blasts orf object list input"""
+    removeTempfasta()
+    E_value_thresh = setEvalue()
+    fastaformat = StringIO(transformORFtoFasta(input))
+    writeTempfasta(fastaformat)
+    result_handle = performQBlast(openTempfasta())
+    blast_records = NCBIXML.parse(result_handle)
+    blast_result_list = iterateBlastrecord(blast_records, E_value_thresh)
+    result_handle.close()
+    return blast_result_list

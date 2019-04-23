@@ -29,6 +29,7 @@ def saved_sequences(request):
 def saved_sequences_result(request):
     try:
         orf_list = DatabaseLogic.loadORFS()
+        ORFSearch.serializeORF(orf_list)
         return render(request, "ORFresult.html", {'orf_list': orf_list})
     except:
         return render(request, "error.html")
@@ -91,5 +92,5 @@ def GeneFunctionresult(request):
         blast_results = SearchGenefunction.BLASTraw(str(rawsequence))
         """Creates blast result list using str input."""
         return render(request, "BLASTresult.html", {'blast_results': blast_results})
-    except ValueError:  # Raise ValueError when no data is derived from HTML form, render empty result page instead
+    except ValueError:  # Raise ValueError when no data is found from HTML form, render empty result page instead
         return render(request, "BLASTresult.html")
