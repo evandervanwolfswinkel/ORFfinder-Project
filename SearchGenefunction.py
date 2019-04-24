@@ -13,9 +13,7 @@ from BLASTObject import blast
 # input and returns the information in blast objects list
 # Known Bugs: No known Bugs
 
-# Blasts raw fasta input, saves it to temporary file and then
-# Uses NCBIWWW.qblast to blast for gene function
-# Returns: Blast object list
+
 
 def removeTempfasta():
     """If temporary fasta exists, delete it"""
@@ -73,12 +71,16 @@ def transformORFtoFasta(input):
     return fasta
 
 
+# Blasts raw fasta input, saves it to temporary file and then
+# Uses NCBIWWW.qblast to blast for gene function
+# Returns: Blast object list
 def BLASTraw(fasta):
     """Blast raw fasta sequence input"""
     removeTempfasta()
     E_value_thresh = setEvalue()
     writeTempfasta(StringIO(fasta))
     result_handle = performQBlast(openTempfasta())
+    removeTempfasta()
     blast_records = NCBIXML.parse(result_handle)
     blast_result_list = iterateBlastrecord(blast_records, E_value_thresh)
     result_handle.close()
@@ -94,6 +96,7 @@ def BLASTorf(input):
     fastaformat = StringIO(transformORFtoFasta(input))
     writeTempfasta(fastaformat)
     result_handle = performQBlast(openTempfasta())
+    removeTempfasta()
     blast_records = NCBIXML.parse(result_handle)
     blast_result_list = iterateBlastrecord(blast_records, E_value_thresh)
     result_handle.close()

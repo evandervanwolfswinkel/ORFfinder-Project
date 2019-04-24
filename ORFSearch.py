@@ -15,12 +15,14 @@ from ORFObject import ORF
 
 # Serializes ORF object list into a file
 def serializeORF(input):
+    """Serializes ORF for later use"""
     with open('serORF', 'wb') as serializedORFfile:
         pickle.dump(input, serializedORFfile)
 
 
-# Deserializes ORF object list into a file
+# Deserializes ORF object list from a file
 def deserializeORF():
+    """Deserializes ORF for use"""
     with open('serORF', 'rb') as serializedORFfile:
         orf_list = pickle.load(serializedORFfile)
     return orf_list
@@ -29,6 +31,7 @@ def deserializeORF():
 # Process input depending on input-type, if input is given as a file, it needs to be decoded
 # from binary to utf-8 text format for StringIO string buffer (places it into memory)
 def processInput(input, inputtype):
+    """Pre processes input depending on type"""
     if inputtype == "raw":
         fasta = StringIO(input)
     if inputtype == "file":
@@ -39,6 +42,7 @@ def processInput(input, inputtype):
 # and byte input from file
 # Returns ORF object list
 def calculateORF(input, inputtype):
+    """Calculates ORF based on different input types"""
     fasta = processInput(input, inputtype)
     records = SeqIO.parse(fasta, "fasta")  # Fasta string buffer gets parsed
     orfobject_list = []  # into SeqIO records object
