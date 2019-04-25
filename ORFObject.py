@@ -2,8 +2,9 @@
 # Created: 22-3-2019
 # Functionality: Object for storing ORF information
 # Known Bugs: No known Bugs
+
 class ORF:
-    """Constructor for creating ORF objects"""
+    """Class object for storing ORF information"""
     def __init__(self, sequence, length, strand, frame, header):
         self.__sequence = sequence
         self.__length = length

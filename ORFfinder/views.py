@@ -10,23 +10,26 @@ import SearchGenefunction
 # Created: 2-3-2019
 # Functionality: Used to render views that are linked to URL's
 # Known Bugs: No known Bugs
-
 # Renders index frontpage
 def index(request):
+    """Renders index"""
     return render(request, "index.html")
 
 
 # Renders gene function page
 def gene_function(request):
+    """Renders gene_function page"""
     return render(request, "gene_function.html")
 
 
 # Renders saved sequences page
 def saved_sequences(request):
+    """Renders page for loading up saved sequences"""
     return render(request, "saved_sequences.html")
 
 
 def saved_sequences_result(request):
+    """Renders saved_sequences as a result page"""
     try:
         orf_list = DatabaseLogic.loadORFS()
         ORFSearch.serializeORF(orf_list)
@@ -38,11 +41,13 @@ def saved_sequences_result(request):
 
 # Renders about page
 def about(request):
+    """Renders an about page"""
     return render(request, "about.html")
 
 
 # Renders either a succes page, notifing that all orfs have been saved, or if operations was not succesfull an error page.
 def ORFsaved(request):
+    """Renders a succes page when storing the orf's has been an success."""
     orf_list = ORFSearch.deserializeORF()
     try:
         DatabaseLogic.storeORFS(orf_list)
@@ -79,7 +84,7 @@ def Blastresult(request):
         blast_results = SearchGenefunction.BLASTorf(orf_list)
         """Creates blast result list using ORF list input."""
         return render(request, "BLASTresult.html", {'blast_results': blast_results})
-    except ValueError:
+    except ValueError:  # render empty blast result page when no value is found
         return render(request, "BLASTresult.html")
 
 

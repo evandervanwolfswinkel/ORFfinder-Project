@@ -1,4 +1,10 @@
+# Auteur: Evander van Wolfswinkel, Jung Ho Loos
+# Created: 2-3-2019
+# Functionality: Used for storing Blast information
+# Known Bugs: No known Bugs
+
 class blast:
+    """Class object that stores blast information"""
     def __init__(self, sequenceName, length, Evalue):
         self.__sequenceName = sequenceName
         self.__length = length
